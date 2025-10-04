@@ -1,0 +1,10 @@
+/* index.css */
+@import "tailwindcss";
+@import "./fonts//poppins.css";
+
+@layer base{
+  img{display: inline}
+}
+body {
+  @apply font-sans;
+}
