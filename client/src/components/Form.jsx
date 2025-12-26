@@ -193,11 +193,17 @@ const VisitingCardForm = () => {
                 src={
                   obj.logo?.toLowerCase() === "beemaa"
                     ? "/beema.png"
+                    : obj.logo?.toLowerCase() === "fsc"
+                    ? "/fsc.png"
                     : "/spekctrum.png"
                 }
                 alt="Company Logo"
                 className={` object-cover ${
-                  obj.logo?.toLowerCase() === "beemaa mb-4" ? "h-12" : "h-35"
+                  obj.logo?.toLowerCase() === "beemaa"
+                    ? "h-12 mb-4"
+                    : obj.logo?.toLowerCase() === "fsc"
+                    ? "h-13 mb-4"
+                    : "h-13 mb-4"
                 }`}
               />
 
