@@ -15,14 +15,11 @@ const VisitingCardForm = () => {
   const [isDownloading, setIsDownloading] = useState(false);
   const [dataFromExcel, setDataFromExcel] = useState([]);
 
-  // Refs to each card for left and right sides
   const cardRefsLeft = useRef([]);
   const cardRefsRight = useRef([]);
 
-  // Track uploaded images per card by index
   const [photoUrls, setPhotoUrls] = useState({});
 
-  // Populate formData from Excel upload (first row only) if needed
   useEffect(() => {
     if (dataFromExcel.length > 0) {
       const obj = dataFromExcel[0];
@@ -44,14 +41,12 @@ const VisitingCardForm = () => {
     setTimeout(() => setIsSubmitting(false), 500);
   };
 
-  // Generate PDFs for all cards
   const handleDownloadPDFs = async () => {
     setIsDownloading(true);
     try {
       for (let i = 0; i < dataFromExcel.length; i++) {
         const leftNode = cardRefsLeft.current[i];
         const rightNode = cardRefsRight.current[i];
-
         if (!leftNode || !rightNode) continue;
 
         const leftDataUrl = await toJpeg(leftNode, {
@@ -71,7 +66,6 @@ const VisitingCardForm = () => {
         const pdfWidth = pdf.internal.pageSize.getWidth();
         const pdfHeight = pdf.internal.pageSize.getHeight();
 
-        // Add left card image
         const leftImgProps = pdf.getImageProperties(leftDataUrl);
         const leftRatio = Math.min(
           pdfWidth / leftImgProps.width,
@@ -86,7 +80,6 @@ const VisitingCardForm = () => {
           leftImgProps.height * leftRatio
         );
 
-        // Add right card image on new page
         pdf.addPage();
         const rightImgProps = pdf.getImageProperties(rightDataUrl);
         const rightRatio = Math.min(
@@ -118,7 +111,6 @@ const VisitingCardForm = () => {
         ID Card Generator
       </h1>
 
-      {/* Form (if needed to input single card or test) */}
       <form
         onSubmit={handleSubmit}
         className="max-w-2xl mx-auto bg-white shadow-lg p-6 rounded-xl grid gap-6 mb-8"
@@ -177,12 +169,10 @@ const VisitingCardForm = () => {
         </button>
       </form>
 
-      {/* Excel data uploader */}
       <div className="flex justify-center mb-12">
         <DataFromExcel setDataFromExcel={setDataFromExcel} />
       </div>
 
-      {/* Card Previews */}
       <div className="max-w-4xl mx-auto space-y-10">
         <h2 className="text-2xl font-bold text-center text-gray-800 mb-6">
           Card Preview
@@ -193,14 +183,24 @@ const VisitingCardForm = () => {
             key={index}
             className="flex flex-col sm:flex-row gap-6 justify-center items-start flex-wrap"
           >
-            {/* Left Card */}
+            {/* LEFT CARD */}
             <div
               ref={(el) => (cardRefsLeft.current[index] = el)}
               className="bg-white p-4 w-[300px] aspect-[5/7] flex flex-col items-center relative shadow-md"
             >
-              <img src="/beema.png" alt="Logo" className="h-14 mb-4" />
+              {/* 👇 Auto-switch logo from Excel */}
+              <img
+                src={
+                  obj.logo?.toLowerCase() === "beemaa"
+                    ? "/beema.png"
+                    : "/spekctrum.png"
+                }
+                alt="Company Logo"
+                className={` object-cover ${
+                  obj.logo?.toLowerCase() === "beemaa mb-4" ? "h-12" : "h-35"
+                }`}
+              />
 
-              {/* Hidden file input for each card */}
               <input
                 type="file"
                 accept="image/*"
@@ -218,22 +218,17 @@ const VisitingCardForm = () => {
                 }}
               />
 
-              {/* Clickable image label */}
               <label
                 htmlFor={`file-input-${index}`}
                 className="w-32 h-40 bg-[#0076bd] rounded-md overflow-hidden mb-4 cursor-pointer flex items-center justify-center"
-                title="Click to upload/change image"
               >
                 {photoUrls[index] ? (
                   <img
                     src={photoUrls[index]}
-                    alt={`Profile ${index}`}
                     className="w-full h-full object-cover"
                   />
                 ) : (
-                  <div className="w-full h-full flex items-center justify-center text-sm text-white">
-                    Click to Upload
-                  </div>
+                  <div className="text-white text-sm">Click to Upload</div>
                 )}
               </label>
 
@@ -241,18 +236,19 @@ const VisitingCardForm = () => {
               <p className="text-sm mt-1 text-blue-600 font-semibold">
                 ETC CODE: <span>{obj.etc || "N/A"}</span>
               </p>
+
               <img
                 src="/signature.png"
                 alt="Signature"
-                className="h-20 w-auto object-contain absolute bottom-4 right-6
- "
+                className="h-20 w-auto object-contain absolute bottom-4 right-6"
               />
+
               <p className="absolute bottom-3 right-4 text-sm text-black">
                 Issuing Authority
               </p>
             </div>
 
-            {/* Right Card */}
+            {/* RIGHT CARD */}
             <div
               ref={(el) => (cardRefsRight.current[index] = el)}
               className="bg-white p-4 w-[300px] aspect-[5/7] flex flex-col justify-between shadow-md"
@@ -273,6 +269,7 @@ const VisitingCardForm = () => {
                   Email: <span className="font-bold">hr@spektrum.com</span>
                 </p>
               </div>
+
               <div className="text-center text-black mt-4 text-sm">
                 <p>This card is issued for Identification purposes only</p>
                 <p className="font-semibold mt-5">
@@ -293,7 +290,6 @@ const VisitingCardForm = () => {
         ))}
       </div>
 
-      {/* Download button */}
       <div className="max-w-3xl mx-auto mt-8">
         <button
           onClick={handleDownloadPDFs}
