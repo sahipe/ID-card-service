@@ -188,7 +188,6 @@ const VisitingCardForm = () => {
               ref={(el) => (cardRefsLeft.current[index] = el)}
               className="bg-white p-4 w-[300px] aspect-[5/7] flex flex-col items-center relative shadow-md"
             >
-              {/* 👇 Auto-switch logo from Excel */}
               <img
                 src={
                   obj.logo?.toLowerCase() === "beemaa"
@@ -283,13 +282,24 @@ const VisitingCardForm = () => {
                   <br />
                   SPECTRUM INSURANCE BROKING (P) LTD.
                 </p>
-                <p>SPECTRUM FINTECH PRIVATE LIMITED</p>
-                <p className="mt-2">
-                  If found, please return to:
-                  <br />
-                  Unit No. 502, 5th Floor, Plot Number 5, Time House Tower,
-                  Wazirpur Community Centre, WIA, Delhi - 110052.
-                </p>
+                <p>SPECTRUM FINTECH (P) LIMITED</p>
+
+                {/* ADDRESS CONDITION */}
+                {obj.logo?.toLowerCase() === "fsc" ? (
+                  <p className="mt-2">
+                    If found, please return to:
+                    <br />
+                    303, 3rd Floor, Plot Number 5, Time House Tower, Wajirpur
+                    Community Centre, WIA, Delhi - 110052.
+                  </p>
+                ) : (
+                  <p className="mt-2">
+                    If found, please return to:
+                    <br />
+                    Unit 502, 5th Floor, Plot Number 5, Time House Tower,
+                    Wajirpur Community Centre, WIA, Delhi - 110052.
+                  </p>
+                )}
               </div>
             </div>
           </div>
