@@ -191,7 +191,7 @@ const VisitingCardForm = () => {
               <img
                 src={
                   obj.logo?.toLowerCase() === "beemaa"
-                    ? "/beema.png"
+                    ? "/beemaa.png"
                     : obj.logo?.toLowerCase() === "fsc"
                     ? "/fsc.png"
                     : "/spekctrum.png"
@@ -199,12 +199,18 @@ const VisitingCardForm = () => {
                 alt="Company Logo"
                 className={` object-cover ${
                   obj.logo?.toLowerCase() === "beemaa"
-                    ? "h-12 mb-4"
+                    ? "h-21 mb-1 "
                     : obj.logo?.toLowerCase() === "fsc"
                     ? "h-13 mb-4"
                     : "h-13 mb-4"
                 }`}
               />
+
+              {obj.logo?.toLowerCase() === "beemaa" && (
+                <p className="text-xs text-orange-500 font-semibold mb-2">
+                  (Formerly known as Spectrum Insurance)
+                </p>
+              )}
 
               <input
                 type="file"
@@ -238,9 +244,17 @@ const VisitingCardForm = () => {
               </label>
 
               <h3 className="text-lg font-semibold">{obj.name || "Name"}</h3>
-              <p className="text-sm mt-1 text-blue-600 font-semibold">
-                ETC CODE: <span>{obj.etc || "N/A"}</span>
-              </p>
+
+              {/* LABEL CHANGES — VALUE SAME (ETC) */}
+              {obj.logo?.toLowerCase() === "fsc" ? (
+                <p className="text-sm  text-blue-600 font-semibold">
+                  FSC No: <span>{obj.etc || "N/A"}</span>
+                </p>
+              ) : (
+                <p className="text-sm mt-1 text-blue-600 font-semibold">
+                  ETC CODE: <span>{obj.etc || "N/A"}</span>
+                </p>
+              )}
 
               <img
                 src="/signature.png"
@@ -284,7 +298,6 @@ const VisitingCardForm = () => {
                 </p>
                 <p>SPECTRUM FINTECH (P) LIMITED</p>
 
-                {/* ADDRESS CONDITION */}
                 {obj.logo?.toLowerCase() === "fsc" ? (
                   <p className="mt-2">
                     If found, please return to:
