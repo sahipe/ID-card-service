@@ -248,7 +248,7 @@ const VisitingCardForm = () => {
               {/* LABEL CHANGES — VALUE SAME (ETC) */}
               {obj.logo?.toLowerCase() === "fsc" ? (
                 <p className="text-sm  text-blue-600 font-semibold">
-                  FSC No: <span>{obj.etc || "N/A"}</span>
+                  FSC CODE: <span>{obj.etc || "N/A"}</span>
                 </p>
               ) : (
                 <p className="text-sm mt-1 text-blue-600 font-semibold">
